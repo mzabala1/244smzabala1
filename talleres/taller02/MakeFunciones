@@ -1,0 +1,9 @@
+CPPFLAGS=""
+OBJECTS=funciones.o main.o
+
+
+main:funciones.cpp main.cpp
+		   g++ -o funciones.cpp main.cpp
+
+
+	

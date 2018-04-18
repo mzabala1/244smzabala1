@@ -1,0 +1,17 @@
+main:	cont:=0
+	suma:=0
+	cero:=0
+	uno:=1
+ciclo:	readInt(n)
+	if n<cero then goto findeciclo
+cuerpo: suma:=suma+n
+	cont:=cont+uno
+	goto ciclo
+findeciclo: suma:=suma/cont
+	    writeInt(suma)
+	    halt
+equ cont M[0]
+equ suma M[1]
+equ cero M[2]
+equ uno M[3]
+equ n M[4]

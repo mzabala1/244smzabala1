@@ -1,0 +1,28 @@
+main:	cero:=0
+	uno:=1
+	len:=100
+	readStr(s,len)
+	base:=100
+	litesp:=32
+	i:=0
+	cont:=0
+ciclo:  dir:= base+i
+	temp:=M[dir+0]
+	if temp=cero then goto findeciclo
+	if temp=litesp then goto espacio
+paso:	i:=i+uno
+	goto ciclo
+espacio: cont:= cont+uno
+	 goto paso
+findeciclo: writeInt(cont)
+	    halt
+equ cero M[0]
+equ uno M[1]
+equ len M[2]
+equ base M[3]
+equ litesp M[4]
+equ i M[5]
+equ cont M[6]
+equ dir M[7]
+equ temp M[8]
+equ s M[100]

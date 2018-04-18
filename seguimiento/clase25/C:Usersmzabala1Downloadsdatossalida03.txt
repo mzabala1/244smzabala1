@@ -1,0 +1,3 @@
+Entre la linea 1 (max 24 caracteres): asdaasdasd
+Entre la linea 2 (max 24 caracteres o la primera 'a'): dsfsdSAs
+Aqui la linea 3 (max 24 caracteres): da

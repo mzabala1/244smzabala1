@@ -1,0 +1,21 @@
+main:	readInt(n)
+	i:=1
+	uno:=1
+	diez:=10
+	suma:=0
+ciclo:	if i>n then goto findeciclo
+	readInt(a)
+	suma:=suma+a
+	i:=i+uno
+	goto ciclo
+findeciclo: total:=suma/n
+	    writeInt(total)
+	    goto fin
+fin:	    halt
+equ n M[0]
+equ i M[1]
+equ suma M[2]
+equ uno M[3]
+equ diez M[4]
+equ total M[5]
+equ a M[6]

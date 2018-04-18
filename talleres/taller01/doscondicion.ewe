@@ -1,0 +1,23 @@
+main: diez:=10
+      veinte:=20
+      uno:=1
+      cero:=0
+      readInt(a)
+      readInt(b)
+      if a<diez then goto E2
+E1:   writeInt(uno)
+      goto E5
+E2:   if b<veinte then goto E4
+E3:   writeInt(uno)
+      goto E5
+E4:   writeInt(cero)
+      goto E5
+E5:   halt
+equ diez M[1]
+equ veinte M[2]
+equ a M[3]
+equ b M[4]
+equ uno M[5]
+equ cero M[6]
+
+      

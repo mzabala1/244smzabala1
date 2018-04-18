@@ -1,0 +1,169 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'calculator'
+require 'calcex'
+
+$calc = Calculator.new()
+
+aux = true
+prefEnv=false
+cont =0
+
+
+if(ARGV[0]=='-e')
+  prefEnv=true
+  cont+=1
+end
+
+ARGV.each do |arg|
+  if(aux)
+    case arg
+    when "-v"
+      aux=!aux
+      cont +=1
+    end
+
+  else
+
+    index = arg.index('=')
+    id = arg[0,index]
+    val = arg[index+1,arg.length]
+    $calc.insert(id,val)
+    aux=!aux
+    cont+=1
+  end
+
+end
+
+i=0
+while(i<cont)
+  ARGV.shift
+  i+=1
+end
+
+ENV.each do |k,v|
+  if k.match(/CALCVAR/)
+    name = k.delete("CALCVAR")
+    if(prefEnv)
+      $calc.insert(name,v)
+    elsif($calc.search(name)==0)
+      $calc.insert(name,v)
+    end
+  end
+end
+
+emptyLines=[]
+assignsFile=[]
+hAssigns=Hash.new(nil)
+interactive=true
+if(ARGV.length!=0)
+  interactive=false
+  atLine=0
+  lines=ARGF.readlines
+  stringFile=""
+  lines.each do |line|
+    if (line.include?('='))
+      hAssigns[atLine]=line.count('=')
+    end
+    if (line=="\n")
+      stringFile.chop!.chop!
+      line+='&'
+      emptyLines.push(atLine)
+    else
+      line+='&'
+    end
+    stringFile+=line
+    atLine+=1
+  end
+
+
+  $calc.eval(stringFile).to_s
+
+  emptyLines.each do|empty|
+    $calc.expressions.insert(empty,"Needed an expression")
+  end
+
+
+  counterAssigns=0
+  counter2=0
+
+  $calc.expressions.each do |result|
+    if(hAssigns[counter2]!=nil)
+      shifts = hAssigns[counter2]
+      stringAssign = " ["
+      i=0
+      while(i<shifts)
+        stringAssign+=$calc.assigns[counterAssigns+i].to_s + ", "
+        i+=1
+      end
+
+      stringAssign.chop!.chop!
+
+      puts "=> "+ result.to_s + stringAssign+"]"
+      counter2+=1
+      counterAssigns+=i
+    else
+      puts "=> " + result.to_s
+      counter2+=1
+    end
+  end
+end
+
+if(interactive)
+
+  begin
+    $stdout.print "> "
+    $stdout.flush
+    text = gets
+    if(!text)
+      break
+    end
+
+    if(text!="\n")
+
+      $calc.assigns.clear
+
+
+      print "=> " + $calc.eval(text).to_s
+
+      if(!$calc.assigns.empty?)
+        assigns = $calc.assigns
+        print "["
+        a=""
+        assigns.each do|key,value|
+          a+=value.to_s
+          a+=","
+        end
+
+        a.chop!
+
+        print a
+        print "]"
+
+        puts ""
+
+      else
+
+        puts ""
+
+      end
+
+      $calc.assigns.clear
+
+    else
+      puts "Parse Error, needed an expresion"
+
+    end
+
+  rescue ParseError
+    puts "Parse Error"
+
+  rescue UnrecognizedTokenException
+    puts "UnrecognizedTokenException"
+
+  rescue
+    puts "Unkown exception"
+
+  end until ($calc.eol and $calc.eof)
+end
